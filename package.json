@@ -1,0 +1,36 @@
+{
+    "name": "@forfuture/wserver",
+    "version": "0.0.0",
+    "description": "WebSocket Server",
+    "main": "dist/lib/index",
+    "bin": {
+        "wserver-connect": "bin/wserver-connect"
+    },
+    "typings": "typings.d.ts",
+    "scripts": {
+        "precommit": "npm run build && git add dist",
+        "prebuild": "rimraf dist",
+        "build": "tsc --project .",
+        "test:lint": "tslint --project .",
+        "test": "npm run test:lint"
+    },
+    "dependencies": {
+        "asyncawait": "^1.0.6",
+        "commander": "^2.12.2",
+        "debug": "^3.1.0",
+        "uuid": "^3.1.0",
+        "ws": "^3.3.2"
+    },
+    "optionalDependencies": {
+        "bufferutil": "^3.0.3",
+        "utf-8-validate": "^4.0.0"
+    },
+    "devDependencies": {
+        "@types/debug": "0.0.30",
+        "@types/uuid": "^3.4.3",
+        "@types/ws": "^3.2.1",
+        "rimraf": "^2.6.2",
+        "tslint": "^5.8.0",
+        "typescript": "^2.6.2"
+    }
+}

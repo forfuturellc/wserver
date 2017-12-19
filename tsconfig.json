@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "es6",
+        "noImplicitAny": false,
+        "sourceMap": true,
+        "outDir": "dist"
+    },
+    "exclude": [
+        "bin",
+        "node_modules",
+        "script/tslint-rules"
+    ]
+}
