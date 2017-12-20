@@ -49,6 +49,10 @@ class Client extends EventEmitter {
         });
     }
 
+    get isOpen(): boolean {
+        return this.ws.OPEN === this.ws.readyState;
+    }
+
     public request(action: string, args?: types.IHash): Promise<any> {
         const message = {
             id: uuid.v4(),
