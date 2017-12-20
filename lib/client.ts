@@ -39,7 +39,7 @@ class Client extends EventEmitter {
         this.ws.on("error", (error) => this.emit("error", error));
         this.ws.on("open", () => this.emit("open"));
         this.ws.on("message", this.handleMessage.bind(this));
-        this.ws.on("close", () => this.handleClose.bind(this));
+        this.ws.on("close", this.handleClose.bind(this));
     }
 
     public close(): Promise<void> {
