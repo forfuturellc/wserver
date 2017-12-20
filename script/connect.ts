@@ -55,15 +55,18 @@ client.on("open", function() {
         eval: evalCmd,
     });
     r.on("exit", function() {
+        if (client.isOpen) { console.log(""); }
         console.log("[*] Goodbye.");
         process.exit();
     });
 });
 
 
-client.on("close", function(code, reason) {
-    console.log("[*] Socket closed. Exiting.");
-    process.exit();
+client.on("close", function(ok, desc) {
+    if (r) {
+        console.log("\n[*] Socket closed. Exiting REPL.");
+        r.close();
+    }
 });
 
 
