@@ -20,6 +20,7 @@ class Client extends EventEmitter {
         this.promises = {};
         this.uri = uri;
         this.ws = new WebSocket(uri);
+        this.ws.on("error", (error) => this.emit("error", error));
         this.ws.on("open", () => this.emit("open"));
         this.ws.on("message", this.handleMessage.bind(this));
         this.ws.on("close", () => this.emit("close"));

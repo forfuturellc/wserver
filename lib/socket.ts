@@ -27,6 +27,7 @@ class Socket extends EventEmitter {
 
     constructor(public ws: WebSocket) {
         super();
+        this.ws.on("error", (error) => this.emit("error", error));
         this.ws.on("pong", () => {
             this.isAlive = true;
         });

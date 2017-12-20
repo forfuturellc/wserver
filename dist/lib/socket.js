@@ -18,6 +18,7 @@ class Socket extends EventEmitter {
         super();
         this.ws = ws;
         this.isAlive = true;
+        this.ws.on("error", (error) => this.emit("error", error));
         this.ws.on("pong", () => {
             this.isAlive = true;
         });
