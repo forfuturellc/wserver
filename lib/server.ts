@@ -40,6 +40,7 @@ class Server extends EventEmitter {
             authenticateSocket: null,
             handleRequest: null,
             pingInterval: 60 * 1000,
+            ignoreConnReset: true,
         }, options);
 
         this.close = async(this.close) as any; // TODO/types:any
@@ -88,7 +89,9 @@ class Server extends EventEmitter {
 
     private registerSocket(ws: WebSocket, req: types.IServer.IIncomingMessage) {
         debug("handling new socket");
-        const socket = new Socket(ws);
+        const socket = new Socket(ws, {
+            ignoreConnReset: this.options.ignoreConnReset,
+        });
         if (this.options.authenticateSocket) {
             req.query = url.parse(req.url, true).query as querystring.ParsedUrlQuery;
             try {

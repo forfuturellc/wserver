@@ -25,9 +25,11 @@ class Socket extends EventEmitter {
     public isAlive = true;
     public profile: types.IHash;
 
-    constructor(public ws: WebSocket) {
+    constructor(public ws: WebSocket, public options: {
+        ignoreConnReset: boolean;
+    }) {
         super();
-        this.ws.on("error", (error) => this.emit("error", error));
+        this.ws.on("error", this.handleError.bind(this));
         this.ws.on("pong", () => {
             this.isAlive = true;
         });
@@ -120,6 +122,16 @@ class Socket extends EventEmitter {
             event,
             payload,
         });
+    }
+
+    private handleError(error: Error|NodeJS.ErrnoException) {
+        if ((error as NodeJS.ErrnoException).code === "ECONNRESET" && this.options.ignoreConnReset) {
+            debug("connection reset by client");
+            this.ws.terminate();
+            this.emit("connection_reset", error);
+            return;
+        }
+        this.emit("error", error);
     }
 }
 

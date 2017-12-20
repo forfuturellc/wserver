@@ -31,6 +31,12 @@ export interface IConstructorOptions {
     // No. of milliseconds between pings.
     // Defaults to 60 seconds.
     pingInterval?: number;
+    // Ignore `ECONNRESET` errors i.e. instead of emitting an `"error"`
+    // event, that will require to be handled by user, emit a different
+    // event (`"connection_reset"`) that user *may* choose to handle
+    // themself. If ignoring, the socket is forcibly terminated.
+    // Defaults to `true`.
+    ignoreConnReset?: boolean;
 }
 
 

@@ -25,6 +25,7 @@ class Server extends EventEmitter {
             authenticateSocket: null,
             handleRequest: null,
             pingInterval: 60 * 1000,
+            ignoreConnReset: true,
         }, options);
         this.close = asyncawait_1.async(this.close); // TODO/types:any
         this.notifyAll = asyncawait_1.async(this.notifyAll); // TODO/types:any
@@ -68,7 +69,9 @@ class Server extends EventEmitter {
     }
     registerSocket(ws, req) {
         debug("handling new socket");
-        const socket = new socket_1.default(ws);
+        const socket = new socket_1.default(ws, {
+            ignoreConnReset: this.options.ignoreConnReset,
+        });
         if (this.options.authenticateSocket) {
             req.query = url.parse(req.url, true).query;
             try {

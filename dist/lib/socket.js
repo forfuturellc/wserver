@@ -14,11 +14,12 @@ const Debug = require("debug");
 const debug = Debug("@forfuture/wserver:socket");
 const noop = () => true;
 class Socket extends EventEmitter {
-    constructor(ws) {
+    constructor(ws, options) {
         super();
         this.ws = ws;
+        this.options = options;
         this.isAlive = true;
-        this.ws.on("error", (error) => this.emit("error", error));
+        this.ws.on("error", this.handleError.bind(this));
         this.ws.on("pong", () => {
             this.isAlive = true;
         });
@@ -106,6 +107,15 @@ class Socket extends EventEmitter {
             event,
             payload,
         });
+    }
+    handleError(error) {
+        if (error.code === "ECONNRESET" && this.options.ignoreConnReset) {
+            debug("connection reset by client");
+            this.ws.terminate();
+            this.emit("connection_reset", error);
+            return;
+        }
+        this.emit("error", error);
     }
 }
 function stringify(data) {
