@@ -6,6 +6,7 @@
  */
 Object.defineProperty(exports, "__esModule", { value: true });
 // built-in modules
+const assert = require("assert");
 const EventEmitter = require("events");
 const url = require("url");
 // installed modules
@@ -13,6 +14,7 @@ const asyncawait_1 = require("asyncawait");
 const Debug = require("debug");
 const WebSocket = require("ws");
 // own modules
+const constants = require("./constants");
 const socket_1 = require("./socket");
 // module variables
 const debug = Debug("@forfuture/wserver:server");
@@ -20,6 +22,7 @@ class Server extends EventEmitter {
     constructor(server, options = {}) {
         super();
         this.sockets = [];
+        this.closing = false;
         this.options = Object.assign({
             path: "/ws",
             authenticateSocket: null,
@@ -36,25 +39,22 @@ class Server extends EventEmitter {
         this.pingTimeout = setInterval(this.pingSockets.bind(this), this.options.pingInterval);
     }
     close() {
+        assert.equal(this.closing, false, "WebSocket-Server already closing");
+        this.closing = true;
+        clearInterval(this.pingTimeout);
+        for (const socket of this.sockets) {
+            asyncawait_1.await(socket.close(constants.WEBSOCKET_CLOSE_CODES.TRY_AGAIN_LATER));
+        }
         asyncawait_1.await(new Promise((a, b) => {
             this.wss.close((e) => e ? b(e) : a());
         }));
-        clearInterval(this.pingTimeout);
-        for (const socket of this.sockets) {
-            try {
-                asyncawait_1.await(socket.close(1000));
-            }
-            catch (error) {
-                debug("error closing socket during server shutdown:", error);
-            }
-        }
         return;
     }
     pingSockets() {
         const sieve = [];
         this.sockets.forEach(function (socket) {
             if (!socket.isAlive) {
-                debug("socket dropped.");
+                debug("socket dropped");
                 socket.ws.terminate();
                 return;
             }
@@ -72,6 +72,9 @@ class Server extends EventEmitter {
         const socket = new socket_1.default(ws, {
             ignoreConnReset: this.options.ignoreConnReset,
         });
+        if (this.closing) {
+            return socket.close(new Error("Server is shutting down"));
+        }
         if (this.options.authenticateSocket) {
             req.query = url.parse(req.url, true).query;
             try {

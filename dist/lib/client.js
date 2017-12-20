@@ -24,13 +24,16 @@ class Client extends EventEmitter {
         this.ws.on("error", (error) => this.emit("error", error));
         this.ws.on("open", () => this.emit("open"));
         this.ws.on("message", this.handleMessage.bind(this));
-        this.ws.on("close", () => this.handleClose.bind(this));
+        this.ws.on("close", this.handleClose.bind(this));
     }
     close() {
         return new Promise((resolve) => {
             this.once("close", resolve);
-            this.ws.close(1000);
+            this.ws.close(constants.WEBSOCKET_CLOSE_CODES.OK);
         });
+    }
+    get isOpen() {
+        return this.ws.OPEN === this.ws.readyState;
     }
     request(action, args) {
         const message = {
