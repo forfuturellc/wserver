@@ -19,6 +19,7 @@ import * as WebSocket from "ws";
 
 
 // own modules
+import * as constants from "./constants";
 import Socket from "./socket";
 import * as types from "../types";
 
@@ -60,7 +61,7 @@ class Server extends EventEmitter {
         clearInterval(this.pingTimeout);
         for (const socket of this.sockets) {
             try {
-                await (socket.close(1000));
+                await (socket.close(constants.WEBSOCKET_CLOSE_CODES.TRY_AGAIN_LATER));
             } catch (error) {
                 debug("error closing socket during server shutdown:", error);
             }

@@ -45,7 +45,7 @@ class Client extends EventEmitter {
     public close(): Promise<void> {
         return new Promise((resolve) => {
             this.once("close", resolve);
-            this.ws.close(1000);
+            this.ws.close(constants.WEBSOCKET_CLOSE_CODES.OK);
         });
     }
 

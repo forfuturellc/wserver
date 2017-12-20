@@ -13,6 +13,10 @@ import * as EventEmitter from "events";
 // installed modules
 import * as Debug from "debug";
 import * as WebSocket from "ws";
+
+
+// own modules
+import * as constants from "./constants";
 import * as types from "../types";
 
 
@@ -74,7 +78,7 @@ class Socket extends EventEmitter {
                 error = e;
             }).then(() => {
                 if (this.ws.readyState !== this.ws.CLOSED) {
-                    this.ws.close(4001);
+                    this.ws.close(constants.WEBSOCKET_CLOSE_CODES.APPLICATION_ERROR);
                 }
             });
         }
