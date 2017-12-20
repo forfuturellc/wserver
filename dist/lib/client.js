@@ -11,6 +11,7 @@ const Debug = require("debug");
 const uuid = require("uuid");
 const WebSocket = require("ws");
 // own modules
+const constants = require("./constants");
 const utils = require("./utils");
 // module variables
 const debug = Debug("@forfuture/wserver:client");
@@ -23,7 +24,7 @@ class Client extends EventEmitter {
         this.ws.on("error", (error) => this.emit("error", error));
         this.ws.on("open", () => this.emit("open"));
         this.ws.on("message", this.handleMessage.bind(this));
-        this.ws.on("close", () => this.emit("close"));
+        this.ws.on("close", () => this.handleClose.bind(this));
     }
     close() {
         return new Promise((resolve) => {
@@ -95,6 +96,11 @@ class Client extends EventEmitter {
             return promise.reject(message.error);
         }
         return promise.resolve(message.result);
+    }
+    handleClose(code, reason) {
+        const ok = code === constants.WEBSOCKET_CLOSE_CODES.OK;
+        const desc = { code, reason };
+        this.emit("close", ok, desc);
     }
 }
 exports.default = Client;

@@ -15,6 +15,7 @@ import * as WebSocket from "ws";
 
 
 // own modules
+import * as constants from "./constants";
 import * as utils from "./utils";
 import * as types from "../types";
 
@@ -38,7 +39,7 @@ class Client extends EventEmitter {
         this.ws.on("error", (error) => this.emit("error", error));
         this.ws.on("open", () => this.emit("open"));
         this.ws.on("message", this.handleMessage.bind(this));
-        this.ws.on("close", () => this.emit("close"));
+        this.ws.on("close", () => this.handleClose.bind(this));
     }
 
     public close(): Promise<void> {
@@ -110,6 +111,12 @@ class Client extends EventEmitter {
             return promise.reject(message.error);
         }
         return promise.resolve(message.result);
+    }
+
+    private handleClose(code: number, reason: string) {
+        const ok = code === constants.WEBSOCKET_CLOSE_CODES.OK;
+        const desc = { code, reason };
+        this.emit("close", ok, desc);
     }
 }
 
