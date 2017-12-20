@@ -6,6 +6,7 @@
 
 
 // built-in modules
+import * as assert from "assert";
 import * as EventEmitter from "events";
 import * as http from "http";
 import * as querystring from "querystring";
@@ -33,6 +34,7 @@ class Server extends EventEmitter {
     public sockets: Socket[] = [];
     private wss: WebSocket.Server;
     private pingTimeout;
+    private closing = false;
 
     constructor(server: http.Server, options: types.IServer.IConstructorOptions = {}) {
         super();
@@ -55,17 +57,15 @@ class Server extends EventEmitter {
     }
 
     public close(): Promise<void> {
+        assert.equal(this.closing, false, "WebSocket-Server already closing");
+        this.closing = true;
+        clearInterval(this.pingTimeout);
+        for (const socket of this.sockets) {
+            await (socket.close(constants.WEBSOCKET_CLOSE_CODES.TRY_AGAIN_LATER));
+        }
         await (new Promise((a, b) => {
             this.wss.close((e) => e ? b(e) : a());
         }));
-        clearInterval(this.pingTimeout);
-        for (const socket of this.sockets) {
-            try {
-                await (socket.close(constants.WEBSOCKET_CLOSE_CODES.TRY_AGAIN_LATER));
-            } catch (error) {
-                debug("error closing socket during server shutdown:", error);
-            }
-        }
         return;
     }
 
@@ -73,7 +73,7 @@ class Server extends EventEmitter {
         const sieve = [];
         this.sockets.forEach(function(socket) {
             if (!socket.isAlive) {
-                debug("socket dropped.");
+                debug("socket dropped");
                 socket.ws.terminate();
                 return;
             }
@@ -93,6 +93,9 @@ class Server extends EventEmitter {
         const socket = new Socket(ws, {
             ignoreConnReset: this.options.ignoreConnReset,
         });
+        if (this.closing) {
+            return socket.close(new Error("Server is shutting down"));
+        }
         if (this.options.authenticateSocket) {
             req.query = url.parse(req.url, true).query as querystring.ParsedUrlQuery;
             try {

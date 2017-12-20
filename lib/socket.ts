@@ -66,20 +66,17 @@ class Socket extends EventEmitter {
             resolve = a;
             reject = b;
         });
-        let error;
-        this.ws.on("close", () => {
-            error ? reject(error) : resolve();
+        this.ws.once("close", () => {
+            resolve();
         });
         if (!(code instanceof Error)) {
             this.ws.close(code);
         } else {
-            this.error(code).catch((e) => {
-                debug("errored sending error before closing:", e);
-                error = e;
-            }).then(() => {
-                if (this.ws.readyState !== this.ws.CLOSED) {
-                    this.ws.close(constants.WEBSOCKET_CLOSE_CODES.APPLICATION_ERROR);
-                }
+            this.error(code).then(() => {
+                this.ws.close(constants.WEBSOCKET_CLOSE_CODES.APPLICATION_ERROR);
+            }).catch((error) => {
+                debug("errored sending error before closing:", error);
+                reject(error);
             });
         }
         return promise;
