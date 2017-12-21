@@ -6,9 +6,9 @@
 ## installation
 
 ```bash
-# Replace '0.0.0' with the latest version.
+# Replace '0.1.0' with the latest version.
 # See git tags.
-$ npm install gitlab:forfuture/wserver#0.0.0
+$ npm install gitlab:forfuture/wserver#0.1.0
 ```
 
 
