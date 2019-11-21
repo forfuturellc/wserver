@@ -15,7 +15,6 @@
         "test": "npm run test:lint"
     },
     "dependencies": {
-        "asyncawait": "^1.0.6",
         "commander": "^2.12.2",
         "debug": "^3.1.0",
         "uuid": "^3.1.0",
