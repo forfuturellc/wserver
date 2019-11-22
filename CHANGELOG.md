@@ -3,10 +3,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-
 ## Unreleased
 
+Changed:
 
+1. **lib**: Use native `async`/`await`.
 
 ## 0.1.0 - 2017-12-21
 
@@ -22,7 +23,6 @@ Changed:
 1. **lib**: Use proper WebSocket close codes
 1. **lib/server**: Improve graceful shutdown
 1. **script/connect**: Improve exit process of script
-
 
 ## 0.0.0 - 2017-12-19
 
