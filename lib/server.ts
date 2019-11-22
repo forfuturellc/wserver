@@ -14,7 +14,6 @@ import * as url from "url";
 
 
 // installed modules
-import { async, await } from "asyncawait";
 import * as Debug from "debug";
 import * as WebSocket from "ws";
 
@@ -46,17 +45,12 @@ class Server extends EventEmitter {
             ignoreConnReset: true,
         }, options);
 
-        this.close = async(this.close) as any; // TODO/types:any
-        this.notifyAll = async(this.notifyAll) as any; // TODO/types:any
-        this.registerSocket = async(this.registerSocket) as any; // TODO/types:any
-        this.handleRequest = (async(this.handleRequest) as any).bind(this); // TODO/types:any
-
         this.wss = new WebSocket.Server({ server, path: this.options.path });
         this.wss.on("connection", this.registerSocket.bind(this));
         this.pingTimeout = setInterval(this.pingSockets.bind(this), this.options.pingInterval);
     }
 
-    public close(): Promise<void> {
+    public async close(): Promise<void> {
         assert.equal(this.closing, false, "WebSocket-Server already closing");
         this.closing = true;
         clearInterval(this.pingTimeout);
@@ -83,12 +77,12 @@ class Server extends EventEmitter {
         this.sockets = sieve;
     }
 
-    public notifyAll(event: string, payload: types.IHash|string): Promise<void> {
+    public async notifyAll(event: string, payload: types.IHash|string): Promise<void> {
         await (this.sockets.map((socket) => socket.notify(event, payload)));
         return;
     }
 
-    private registerSocket(ws: WebSocket, req: types.IServer.IIncomingMessage) {
+    private async registerSocket(ws: WebSocket, req: types.IServer.IIncomingMessage) {
         debug("handling new socket");
         const socket = new Socket(ws, {
             ignoreConnReset: this.options.ignoreConnReset,
@@ -106,10 +100,10 @@ class Server extends EventEmitter {
         }
         this.emit("socket", socket);
         this.sockets.push(socket);
-        socket.on("request", this.handleRequest);
+        socket.on("request", this.handleRequest.bind(this));
     }
 
-    private handleRequest(request: types.ISocket.IRequest, socket: Socket) {
+    private async handleRequest(request: types.ISocket.IRequest, socket: Socket) {
         debug("handling message from socket: %s", request.action);
         if (!this.options.handleRequest) {
             return socket.rejectRequest(request, new Error("NotImplemented"));

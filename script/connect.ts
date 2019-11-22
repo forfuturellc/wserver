@@ -10,7 +10,6 @@ import * as repl from "repl";
 
 
 // installed modules
-import { async, await } from "asyncawait";
 import * as program from "commander";
 
 
@@ -70,7 +69,7 @@ client.on("close", function(ok, desc) {
 });
 
 
-const evalCmd = async (function(cmd, context, filename, callback) {
+const evalCmd = async function(cmd, context, filename, callback) {
     if (!cmd) {
         return callback();
     }
@@ -105,4 +104,4 @@ const evalCmd = async (function(cmd, context, filename, callback) {
         console.error("ERROR:", JSON.stringify(error, null, 4));
     }
     return callback();
-});
+};
