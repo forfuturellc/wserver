@@ -5,9 +5,15 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+## 0.2.0 - 2024-03-05
+
 Changed:
 
 1. **lib**: Use native `async`/`await`.
+
+Fixed:
+
+1. **chore**: Update dependencies.
 
 ## 0.1.0 - 2017-12-21
 
