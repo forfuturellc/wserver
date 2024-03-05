@@ -15,9 +15,9 @@
         "test": "npm run test:lint"
     },
     "dependencies": {
-        "commander": "^2.12.2",
-        "debug": "^3.1.0",
-        "uuid": "^3.1.0",
+        "commander": "^12.0.0",
+        "debug": "^4.3.4",
+        "uuid": "^9.0.1",
         "ws": "^3.3.2"
     },
     "optionalDependencies": {
@@ -25,11 +25,11 @@
         "utf-8-validate": "^4.0.0"
     },
     "devDependencies": {
-        "@types/debug": "0.0.30",
-        "@types/uuid": "^3.4.3",
+        "@types/debug": "^4.1.12",
+        "@types/uuid": "^9.0.8",
         "@types/ws": "^3.2.1",
-        "rimraf": "^2.6.2",
+        "rimraf": "^5.0.5",
         "tslint": "^5.8.0",
-        "typescript": "^3.7.2"
+        "typescript": "^5.3.3"
     }
 }

@@ -16,11 +16,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // built-in modules
 const repl = require("repl");
 // installed modules
-const program = require("commander");
+const commander_1 = require("commander");
 // own modules
 const lib_1 = require("../lib");
 // tslint:disable-next-line:no-var-requires
 const pkg = require("../../package.json");
+const program = new commander_1.Command();
 // module variables
 let r; // the REPL instance
 let client; // the WebSocket instance

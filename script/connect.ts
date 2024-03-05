@@ -10,13 +10,14 @@ import * as repl from "repl";
 
 
 // installed modules
-import * as program from "commander";
+import { Command } from "commander";
 
 
 // own modules
 import { Client } from "../lib";
 // tslint:disable-next-line:no-var-requires
 const pkg = require("../../package.json");
+const program = new Command();
 
 
 // module variables

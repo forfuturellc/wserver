@@ -57,7 +57,7 @@ class Server extends EventEmitter {
         for (const socket of this.sockets) {
             await (socket.close(constants.WEBSOCKET_CLOSE_CODES.TRY_AGAIN_LATER));
         }
-        await (new Promise((a, b) => {
+        await (new Promise<void>((a, b) => {
             this.wss.close((e) => e ? b(e) : a());
         }));
         return;

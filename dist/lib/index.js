@@ -3,6 +3,7 @@
  * Copyright (c) 2017 Forfuture, LLC (https://forfuture.tech)
  */
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Socket = exports.Server = exports.Client = void 0;
 // own modules
 const client_1 = require("./client");
 exports.Client = client_1.default;
