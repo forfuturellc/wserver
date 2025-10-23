@@ -8,7 +8,6 @@
     },
     "typings": "typings.d.ts",
     "scripts": {
-        "precommit": "npm run build && git add dist",
         "prebuild": "rimraf dist",
         "build": "tsc --project .",
         "format": "prettier --write '{lib,script,types}/**/*.{js,ts}' '*.{js,json,md}'",

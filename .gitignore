@@ -1,3 +1,4 @@
 forfuture-wserver-*.tgz
-node_modules
+dist/
+node_modules/
 *.swp
