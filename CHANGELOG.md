@@ -5,6 +5,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+## 0.3.1 - 2025-10-23
+
+Fixed:
+
+1. Fixed missing build files in npm package.
+
 ## 0.3.0 - 2025-10-23
 
 Added:
