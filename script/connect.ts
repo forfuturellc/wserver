@@ -2,8 +2,6 @@
  * Copyright (c) 2017 Forfuture, LLC (https://forfuture.tech)
  */
 
-/* tslint:disable: no-console */
-
 
 // built-in modules
 import * as repl from "repl";
@@ -15,7 +13,6 @@ import { Command } from "commander";
 
 // own modules
 import { Client } from "../lib";
-// tslint:disable-next-line:no-var-requires
 const pkg = require("../../package.json");
 const program = new Command();
 
@@ -29,6 +26,7 @@ let uri: string; // URI to wserver instance
 program
     .version(pkg.version)
     .usage("[options] <uri>")
+    .argument('<uri>')
     .parse(process.argv);
 
 
@@ -77,7 +75,6 @@ const evalCmd = async function(cmd, context, filename, callback) {
 
     cmd = cmd.trim();
     if (cmd[0] === "!") {
-        // tslint:disable-next-line:no-eval
         console.log(eval(cmd.slice(1)));
         return callback();
     }

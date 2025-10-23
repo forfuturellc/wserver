@@ -5,10 +5,14 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
-Fixed:
+Added:
 
 1. **lib/server**: Notify client of successful authentication.
+
+Fixed:
+
 1. **lib/socket**: Emit `close` event.
+1. **chore**: Update dependencies.
 
 ## 0.2.0 - 2024-03-05
 

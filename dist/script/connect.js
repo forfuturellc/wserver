@@ -12,14 +12,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-/* tslint:disable: no-console */
 // built-in modules
 const repl = require("repl");
 // installed modules
 const commander_1 = require("commander");
 // own modules
 const lib_1 = require("../lib");
-// tslint:disable-next-line:no-var-requires
 const pkg = require("../../package.json");
 const program = new commander_1.Command();
 // module variables
@@ -29,6 +27,7 @@ let uri; // URI to wserver instance
 program
     .version(pkg.version)
     .usage("[options] <uri>")
+    .argument('<uri>')
     .parse(process.argv);
 uri = program.args.shift();
 if (!uri) {
@@ -67,7 +66,6 @@ const evalCmd = function (cmd, context, filename, callback) {
         }
         cmd = cmd.trim();
         if (cmd[0] === "!") {
-            // tslint:disable-next-line:no-eval
             console.log(eval(cmd.slice(1)));
             return callback();
         }

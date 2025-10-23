@@ -26,10 +26,10 @@ class Socket extends EventEmitter {
             this.isAlive = true;
         });
         this.ws.on("message", (message) => {
-            message = message.toString();
+            const text = message.toString();
             let request;
             try {
-                request = JSON.parse(message);
+                request = JSON.parse(text);
                 request.args = request.args || {};
                 assert.equal("string", typeof request.id, "request.id must be a string");
                 assert.equal("string", typeof request.action, "request.action must be a string");
@@ -73,7 +73,7 @@ class Socket extends EventEmitter {
     }
     ping() {
         this.isAlive = false;
-        this.ws.ping("", false, true);
+        this.ws.ping("", false);
     }
     send(message) {
         message = stringify(message);
