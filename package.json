@@ -10,9 +10,9 @@
     "scripts": {
         "prebuild": "rimraf dist",
         "build": "tsc --project .",
-        "format": "prettier --write '{lib,script,types}/**/*.{js,ts}' '*.{js,json,md}'",
+        "format": "prettier --write '{lib,script,types}/**/*.{js,ts}' '*.{js,json,md,yml}'",
         "test": "npm run test:format",
-        "test:format": "prettier --check '{lib,script,types}/**/*.{js,ts}' '*.{js,json,md}'"
+        "test:format": "prettier --check '{lib,script,types}/**/*.{js,ts}' '*.{js,json,md,yml}'"
     },
     "dependencies": {
         "commander": "^14.0.1",
