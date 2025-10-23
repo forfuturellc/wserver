@@ -11,7 +11,9 @@
         "precommit": "npm run build && git add dist",
         "prebuild": "rimraf dist",
         "build": "tsc --project .",
-        "test": "npm run test:lint"
+        "format": "prettier --write '{lib,script,types}/**/*.{js,ts}' '*.{js,json,md}'",
+        "test": "npm run test:format",
+        "test:format": "prettier --check '{lib,script,types}/**/*.{js,ts}' '*.{js,json,md}'"
     },
     "dependencies": {
         "commander": "^14.0.1",
@@ -23,10 +25,17 @@
         "@types/debug": "^4.1.12",
         "@types/node": "^22.18.12",
         "@types/ws": "^8.18.1",
+        "prettier": "^3.6.2",
         "rimraf": "^6.0.1",
         "typescript": "^5.9.3"
     },
     "optionalDependencies": {
         "bufferutil": "^4.0.9"
+    },
+    "prettier": {
+        "arrowParens": "always",
+        "endOfLine": "lf",
+        "tabWidth": 4,
+        "trailingComma": "all"
     }
 }

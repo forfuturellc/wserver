@@ -4,11 +4,9 @@
  * Socket component.
  */
 
-
 // own modules
 import Socket from "../lib/socket";
 import * as base from "./base";
-
 
 export interface IRequest {
     // ID of request.
@@ -19,7 +17,4 @@ export interface IRequest {
     args: base.IHash;
 }
 
-
-export {
-    Socket,
-};
+export { Socket };

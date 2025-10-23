@@ -48,11 +48,11 @@ class Server extends EventEmitter {
             this.closing = true;
             clearInterval(this.pingTimeout);
             for (const socket of this.sockets) {
-                yield (socket.close(constants.WEBSOCKET_CLOSE_CODES.TRY_AGAIN_LATER));
+                yield socket.close(constants.WEBSOCKET_CLOSE_CODES.TRY_AGAIN_LATER);
             }
-            yield (new Promise((a, b) => {
-                this.wss.close((e) => e ? b(e) : a());
-            }));
+            yield new Promise((a, b) => {
+                this.wss.close((e) => (e ? b(e) : a()));
+            });
             return;
         });
     }
@@ -71,7 +71,7 @@ class Server extends EventEmitter {
     }
     notifyAll(event, payload) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield (this.sockets.map((socket) => socket.notify(event, payload)));
+            yield this.sockets.map((socket) => socket.notify(event, payload));
             return;
         });
     }
@@ -86,9 +86,10 @@ class Server extends EventEmitter {
             }
             let wasAuthenticated = false;
             if (this.options.authenticateSocket) {
-                req.query = url.parse(req.url, true).query;
+                req.query = url.parse(req.url, true)
+                    .query;
                 try {
-                    socket.profile = yield (this.options.authenticateSocket(req));
+                    socket.profile = yield this.options.authenticateSocket(req);
                     wasAuthenticated = true;
                 }
                 catch (error) {
@@ -111,7 +112,7 @@ class Server extends EventEmitter {
             }
             let result;
             try {
-                result = yield (this.options.handleRequest(request, socket));
+                result = yield this.options.handleRequest(request, socket);
             }
             catch (error) {
                 return socket.rejectRequest(request, error);

@@ -2,13 +2,11 @@
 
 > WebSocket Server
 
-
 ## installation
 
 ```bash
 $ npm install @forfuture/wserver
 ```
-
 
 ## license
 

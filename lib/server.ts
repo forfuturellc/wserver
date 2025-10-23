@@ -4,7 +4,6 @@
  * WebSocket server.
  */
 
-
 // built-in modules
 import * as assert from "assert";
 import * as EventEmitter from "events";
@@ -12,21 +11,17 @@ import * as http from "http";
 import * as querystring from "querystring";
 import * as url from "url";
 
-
 // installed modules
 import * as Debug from "debug";
 import * as WebSocket from "ws";
-
 
 // own modules
 import * as constants from "./constants";
 import Socket from "./socket";
 import * as types from "../types";
 
-
 // module variables
 const debug = Debug("@forfuture/wserver:server");
-
 
 class Server extends EventEmitter {
     public options: types.IServer.IConstructorOptions;
@@ -35,19 +30,28 @@ class Server extends EventEmitter {
     private pingTimeout;
     private closing = false;
 
-    constructor(server: http.Server, options: types.IServer.IConstructorOptions = {}) {
+    constructor(
+        server: http.Server,
+        options: types.IServer.IConstructorOptions = {},
+    ) {
         super();
-        this.options = Object.assign({
-            path: "/ws",
-            authenticateSocket: null,
-            handleRequest: null,
-            pingInterval: 60 * 1000,
-            ignoreConnReset: true,
-        }, options);
+        this.options = Object.assign(
+            {
+                path: "/ws",
+                authenticateSocket: null,
+                handleRequest: null,
+                pingInterval: 60 * 1000,
+                ignoreConnReset: true,
+            },
+            options,
+        );
 
         this.wss = new WebSocket.Server({ server, path: this.options.path });
         this.wss.on("connection", this.registerSocket.bind(this));
-        this.pingTimeout = setInterval(this.pingSockets.bind(this), this.options.pingInterval);
+        this.pingTimeout = setInterval(
+            this.pingSockets.bind(this),
+            this.options.pingInterval,
+        );
     }
 
     public async close(): Promise<void> {
@@ -55,17 +59,17 @@ class Server extends EventEmitter {
         this.closing = true;
         clearInterval(this.pingTimeout);
         for (const socket of this.sockets) {
-            await (socket.close(constants.WEBSOCKET_CLOSE_CODES.TRY_AGAIN_LATER));
+            await socket.close(constants.WEBSOCKET_CLOSE_CODES.TRY_AGAIN_LATER);
         }
-        await (new Promise<void>((a, b) => {
-            this.wss.close((e) => e ? b(e) : a());
-        }));
+        await new Promise<void>((a, b) => {
+            this.wss.close((e) => (e ? b(e) : a()));
+        });
         return;
     }
 
     public pingSockets() {
         const sieve = [];
-        this.sockets.forEach(function(socket) {
+        this.sockets.forEach(function (socket) {
             if (!socket.isAlive) {
                 debug("socket dropped");
                 socket.ws.terminate();
@@ -77,12 +81,18 @@ class Server extends EventEmitter {
         this.sockets = sieve;
     }
 
-    public async notifyAll(event: string, payload: types.IHash|string): Promise<void> {
-        await (this.sockets.map((socket) => socket.notify(event, payload)));
+    public async notifyAll(
+        event: string,
+        payload: types.IHash | string,
+    ): Promise<void> {
+        await this.sockets.map((socket) => socket.notify(event, payload));
         return;
     }
 
-    private async registerSocket(ws: WebSocket, req: types.IServer.IIncomingMessage) {
+    private async registerSocket(
+        ws: WebSocket,
+        req: types.IServer.IIncomingMessage,
+    ) {
         debug("handling new socket");
         const socket = new Socket(ws, {
             ignoreConnReset: this.options.ignoreConnReset,
@@ -92,9 +102,10 @@ class Server extends EventEmitter {
         }
         let wasAuthenticated = false;
         if (this.options.authenticateSocket) {
-            req.query = url.parse(req.url, true).query as querystring.ParsedUrlQuery;
+            req.query = url.parse(req.url, true)
+                .query as querystring.ParsedUrlQuery;
             try {
-                socket.profile = await (this.options.authenticateSocket(req));
+                socket.profile = await this.options.authenticateSocket(req);
                 wasAuthenticated = true;
             } catch (error) {
                 return socket.close(error);
@@ -108,7 +119,10 @@ class Server extends EventEmitter {
         }
     }
 
-    private async handleRequest(request: types.ISocket.IRequest, socket: Socket) {
+    private async handleRequest(
+        request: types.ISocket.IRequest,
+        socket: Socket,
+    ) {
         debug("handling message from socket: %s", request.action);
         if (!this.options.handleRequest) {
             return socket.rejectRequest(request, new Error("NotImplemented"));
@@ -117,13 +131,12 @@ class Server extends EventEmitter {
         let result;
 
         try {
-            result = await (this.options.handleRequest(request, socket));
+            result = await this.options.handleRequest(request, socket);
         } catch (error) {
             return socket.rejectRequest(request, error);
         }
         return socket.acceptRequest(request, result);
     }
 }
-
 
 export default Server;

@@ -2,33 +2,28 @@
  * Copyright (c) 2017 Forfuture, LLC (https://forfuture.tech)
  */
 
-
 // built-in modules
 import * as assert from "assert";
 import * as EventEmitter from "events";
-
 
 // installed modules
 import * as Debug from "debug";
 import * as uuid from "uuid";
 import * as WebSocket from "ws";
 
-
 // own modules
 import * as constants from "./constants";
 import * as utils from "./utils";
 import * as types from "../types";
 
-
 // module variables
 const debug = Debug("@forfuture/wserver:client");
-
 
 class Client extends EventEmitter {
     public uri: string;
     private ws: WebSocket;
     private promises: {
-        [key: string]: { resolve: (data) => void, reject: (error) => void },
+        [key: string]: { resolve: (data) => void; reject: (error) => void };
     } = {};
 
     constructor(uri: string) {
@@ -86,7 +81,10 @@ class Client extends EventEmitter {
         }
         if (message.event) {
             try {
-                assert.ok(utils.isDefined(message.payload), "Message payload missing");
+                assert.ok(
+                    utils.isDefined(message.payload),
+                    "Message payload missing",
+                );
             } catch (error) {
                 debug(error);
                 return this.emit("parse_error", error);
@@ -97,8 +95,14 @@ class Client extends EventEmitter {
             // TODO: improve assertion. Use protocol buffers?
             const hasResult = utils.isDefined(message.result);
             const hasError = utils.isDefined(message.error);
-            assert.ok(hasResult || hasError, "Message result and error both missing");
-            assert.ok(!(hasResult && hasError), "Message result and error both provided");
+            assert.ok(
+                hasResult || hasError,
+                "Message result and error both missing",
+            );
+            assert.ok(
+                !(hasResult && hasError),
+                "Message result and error both provided",
+            );
             if (hasResult) {
                 assert.ok(message.requestId, "Message requestId missing");
             }
@@ -106,7 +110,9 @@ class Client extends EventEmitter {
             debug(error);
             return this.emit("parse_error", error);
         }
-        const promise = message.requestId ? this.promises[message.requestId] : null;
+        const promise = message.requestId
+            ? this.promises[message.requestId]
+            : null;
         delete this.promises[message.requestId];
         if (message.error) {
             if (!promise) {
@@ -123,6 +129,5 @@ class Client extends EventEmitter {
         this.emit("close", ok, desc);
     }
 }
-
 
 export default Client;

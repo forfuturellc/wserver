@@ -4,14 +4,9 @@
  * Types.
  */
 
-
 // own modules
 import * as IServer from "./server";
 import * as ISocket from "./socket";
 
-
 export * from "./base";
-export {
-    IServer,
-    ISocket,
-};
+export { IServer, ISocket };

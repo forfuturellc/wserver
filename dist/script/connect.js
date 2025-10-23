@@ -27,7 +27,7 @@ let uri; // URI to wserver instance
 program
     .version(pkg.version)
     .usage("[options] <uri>")
-    .argument('<uri>')
+    .argument("<uri>")
     .parse(process.argv);
 uri = program.args.shift();
 if (!uri) {
@@ -89,7 +89,7 @@ const evalCmd = function (cmd, context, filename, callback) {
             params[match[1]] = val;
         }
         try {
-            const result = yield (client.request(action, params));
+            const result = yield client.request(action, params);
             console.log(result);
         }
         catch (error) {

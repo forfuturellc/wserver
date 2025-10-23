@@ -4,7 +4,6 @@
  * Base types.
  */
 
-
 /**
  * Error class.
  */
@@ -12,7 +11,6 @@ export interface IError extends Error {
     code?: string;
     message: string;
 }
-
 
 /**
  * Basic key-value interface.

@@ -4,16 +4,13 @@
  * Server component.
  */
 
-
 // built-in modules
 import * as http from "http";
 import * as querystring from "querystring";
 
-
 // own modules
 import * as base from "./base";
 import * as socket from "./socket";
-
 
 export interface IConstructorOptions {
     // HTTP request path to listen for WebSocket upgrade
@@ -30,7 +27,10 @@ export interface IConstructorOptions {
     // By default, no authentication is performed.
     authenticateSocket?: (req: http.IncomingMessage) => Promise<base.IHash>;
     // A function for handling requests from websockets.
-    handleRequest?: (req: socket.IRequest, socket: socket.Socket) => Promise<base.IHash>;
+    handleRequest?: (
+        req: socket.IRequest,
+        socket: socket.Socket,
+    ) => Promise<base.IHash>;
     // No. of milliseconds between pings.
     // Defaults to 60 seconds.
     pingInterval?: number;
@@ -41,7 +41,6 @@ export interface IConstructorOptions {
     // Defaults to `true`.
     ignoreConnReset?: boolean;
 }
-
 
 export interface IIncomingMessage extends http.IncomingMessage {
     // Parsed query.

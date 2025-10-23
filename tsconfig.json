@@ -6,8 +6,5 @@
         "sourceMap": true,
         "outDir": "dist"
     },
-    "exclude": [
-        "bin",
-        "node_modules"
-    ]
+    "exclude": ["bin", "node_modules"]
 }

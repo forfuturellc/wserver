@@ -62,9 +62,11 @@ class Socket extends EventEmitter {
             this.ws.close(code);
         }
         else {
-            this.error(code).then(() => {
+            this.error(code)
+                .then(() => {
                 this.ws.close(constants.WEBSOCKET_CLOSE_CODES.APPLICATION_ERROR);
-            }).catch((error) => {
+            })
+                .catch((error) => {
                 debug("errored sending error before closing:", error);
                 reject(error);
             });
@@ -109,7 +111,8 @@ class Socket extends EventEmitter {
         });
     }
     handleError(error) {
-        if (error.code === "ECONNRESET" && this.options.ignoreConnReset) {
+        if (error.code === "ECONNRESET" &&
+            this.options.ignoreConnReset) {
             debug("connection reset by client");
             this.ws.terminate();
             this.emit("connection_reset", error);

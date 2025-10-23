@@ -90,7 +90,9 @@ class Client extends EventEmitter {
             debug(error);
             return this.emit("parse_error", error);
         }
-        const promise = message.requestId ? this.promises[message.requestId] : null;
+        const promise = message.requestId
+            ? this.promises[message.requestId]
+            : null;
         delete this.promises[message.requestId];
         if (message.error) {
             if (!promise) {
