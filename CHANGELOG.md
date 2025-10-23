@@ -7,6 +7,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 Fixed:
 
+1. **lib/server**: Notify client of successful authentication.
 1. **lib/socket**: Emit `close` event.
 
 ## 0.2.0 - 2024-03-05

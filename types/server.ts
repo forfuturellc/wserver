@@ -20,6 +20,9 @@ export interface IConstructorOptions {
     // requests.
     // Defaults to `"/ws"`.
     path?: string;
+    // Notification sent to client once authentication
+    // has completed successfully.
+    authenticatedNotification?: string;
     // A function that returns a Promise that resolves
     // successfully to authenticate request, saving any
     // returned data in `socket.profile`. If promise is

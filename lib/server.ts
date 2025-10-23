@@ -90,10 +90,12 @@ class Server extends EventEmitter {
         if (this.closing) {
             return socket.close(new Error("Server is shutting down"));
         }
+        let wasAuthenticated = false;
         if (this.options.authenticateSocket) {
             req.query = url.parse(req.url, true).query as querystring.ParsedUrlQuery;
             try {
                 socket.profile = await (this.options.authenticateSocket(req));
+                wasAuthenticated = true;
             } catch (error) {
                 return socket.close(error);
             }
@@ -101,6 +103,9 @@ class Server extends EventEmitter {
         this.emit("socket", socket);
         this.sockets.push(socket);
         socket.on("request", this.handleRequest.bind(this));
+        if (wasAuthenticated && this.options.authenticatedNotification) {
+            socket.notify(this.options.authenticatedNotification, {});
+        }
     }
 
     private async handleRequest(request: types.ISocket.IRequest, socket: Socket) {
