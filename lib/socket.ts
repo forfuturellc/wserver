@@ -53,6 +53,7 @@ class Socket extends EventEmitter {
         });
         this.ws.on("close", () => {
             this.isAlive = false;
+            this.emit("close");
         });
     }
 
