@@ -5,6 +5,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+## 0.3.2 - 2025-11-08
+
 Fixed:
 
 1. **chore**: Strict null checks.
