@@ -15,17 +15,17 @@
         "test:format": "prettier --check '{lib,script,types}/**/*.{js,ts}' '*.{js,json,md,yml}'"
     },
     "dependencies": {
-        "commander": "^14.0.1",
+        "commander": "^14.0.2",
         "debug": "^4.4.3",
         "uuid": "^13.0.0",
         "ws": "^8.18.3"
     },
     "devDependencies": {
         "@types/debug": "^4.1.12",
-        "@types/node": "^22.18.12",
+        "@types/node": "^22.19.0",
         "@types/ws": "^8.18.1",
         "prettier": "^3.6.2",
-        "rimraf": "^6.0.1",
+        "rimraf": "^6.1.0",
         "typescript": "^5.9.3"
     },
     "optionalDependencies": {

@@ -7,7 +7,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 Fixed:
 
-1. Strict null checks.
+1. **chore**: Strict null checks.
+1. **chore**: Update dependencies.
 
 ## 0.3.1 - 2025-10-23
 
