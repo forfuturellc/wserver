@@ -120,6 +120,7 @@ class Client extends EventEmitter {
             }
             return promise.reject(message.error);
         }
+        assert.ok(promise, "Missing promise for request");
         return promise.resolve(message.result);
     }
 

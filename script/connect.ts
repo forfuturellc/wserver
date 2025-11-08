@@ -16,7 +16,7 @@ const program = new Command();
 // module variables
 let r: repl.REPLServer; // the REPL instance
 let client: Client; // the WebSocket instance
-let uri: string; // URI to wserver instance
+let uri: string | undefined; // URI to wserver instance
 
 program
     .version(pkg.version)

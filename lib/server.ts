@@ -68,7 +68,7 @@ class Server extends EventEmitter {
     }
 
     public pingSockets() {
-        const sieve = [];
+        const sieve: Socket[] = [];
         this.sockets.forEach(function (socket) {
             if (!socket.isAlive) {
                 debug("socket dropped");
@@ -95,14 +95,14 @@ class Server extends EventEmitter {
     ) {
         debug("handling new socket");
         const socket = new Socket(ws, {
-            ignoreConnReset: this.options.ignoreConnReset,
+            ignoreConnReset: this.options.ignoreConnReset!,
         });
         if (this.closing) {
             return socket.close(new Error("Server is shutting down"));
         }
         let wasAuthenticated = false;
         if (this.options.authenticateSocket) {
-            req.query = url.parse(req.url, true)
+            req.query = url.parse(req.url as string, true)
                 .query as querystring.ParsedUrlQuery;
             try {
                 socket.profile = await this.options.authenticateSocket(req);

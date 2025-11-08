@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+Fixed:
+
+1. Strict null checks.
+
 ## 0.3.1 - 2025-10-23
 
 Fixed:
