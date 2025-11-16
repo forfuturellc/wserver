@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+Fixed:
+
+1. **server**: Unregister socket immediately it closes.
+
 ## 0.3.2 - 2025-11-08
 
 Fixed:

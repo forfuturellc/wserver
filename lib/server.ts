@@ -113,6 +113,10 @@ class Server extends EventEmitter {
         }
         this.emit("socket", socket);
         this.sockets.push(socket);
+        socket.on(
+            "close",
+            () => (this.sockets = this.sockets.filter((i) => i !== socket)),
+        );
         socket.on("request", this.handleRequest.bind(this));
         if (wasAuthenticated && this.options.authenticatedNotification) {
             socket.notify(this.options.authenticatedNotification, {});
